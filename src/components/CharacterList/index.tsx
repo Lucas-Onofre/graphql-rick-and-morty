@@ -163,10 +163,8 @@ const CharacterCard = ({
   status,
   species,
   location,
-  origin,
   episode,
 }: CharacterCardProps) => {
-  console.log(episode);
   return (
     <CardContainer>
       <CharImage src={image} alt={name} />

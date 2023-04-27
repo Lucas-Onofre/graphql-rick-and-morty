@@ -122,10 +122,10 @@ export const CharInfoContainer = styled.div`
 
 export const PaginationButtonsContainer = styled.div`
   display: flex;
-  justify-content: center;
+  justify-content: space-around;
   align-items: center;
 
-  gap: 70vw;
+  width: 95%;
 
   margin: 2rem auto;
 

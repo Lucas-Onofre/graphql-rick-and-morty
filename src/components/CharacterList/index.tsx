@@ -1,7 +1,13 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 
-import { Input, Select } from "antd";
+import { Button, Input, Select } from "antd";
+import { Loading } from "../Loading";
 
+import { useFetchCharacters } from "../../graphql/queries/useFetchCharacters";
+
+import { useDebounce } from "../../hooks/useDebounce";
+
+import { StatusSpan } from "../../styles/components/StatusSpan";
 import {
   CardContainer,
   CharInfoContainer,
@@ -11,24 +17,45 @@ import {
   FilterContainer,
   CharPrincipalInfos,
   CharOtherInfos,
+  PaginationButtonsContainer,
 } from "./styles";
 
-import { StatusSpan } from "../../styles/components/StatusSpan";
-import { useFetchCharacters } from "../../graphql/queries/useFetchCharacters";
-
 export const CharacterList = () => {
-  const { loading, characters, currentPage, nextPage, getCharacters } =
+  const [page, setPage] = useState(1);
+
+  const [nameQuery, setNameQuery] = useState("");
+  const [status, setStatus] = useState("");
+
+  const handleSearch = useDebounce((query: string) => {
+    setPage(1);
+    setNameQuery(query);
+
+    getCharacters({
+      variables: {
+        page,
+        name: query,
+        status,
+      },
+    });
+  }, 300);
+
+  const handleChangeQuery = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setNameQuery(event.target.value);
+    handleSearch(event.target.value);
+  };
+
+  const { loading, characters, prevPage, nextPage, getCharacters } =
     useFetchCharacters();
 
   useEffect(() => {
     getCharacters({
       variables: {
-        page: 1,
-        name: "",
-        status: "",
+        page,
+        name: nameQuery,
+        status,
       },
     });
-  }, [getCharacters]);
+  }, [getCharacters, page, status]);
 
   return (
     <>
@@ -43,6 +70,8 @@ export const CharacterList = () => {
               outline: "none",
               border: "none",
             }}
+            value={nameQuery}
+            onChange={handleChangeQuery}
           />
           <Select
             placeholder="Status"
@@ -56,33 +85,53 @@ export const CharacterList = () => {
             options={[
               {
                 label: "Alive",
-                value: "alive",
+                value: "Alive",
               },
               {
                 label: "Dead",
-                value: "dead",
+                value: "Dead",
               },
               {
                 label: "Unknown",
                 value: "unknown",
               },
             ]}
+            onChange={(value) => setStatus(value)}
           />
         </FilterContainer>
 
-        <CharacterListContainer>
-          {characters?.map((character) => (
-            <CharacterCard
-              key={character.id}
-              name={character.name}
-              image={character.image}
-              status={character.status}
-              origin={character.origin}
-              location={character.location}
-              species={character.species}
-            />
-          ))}
-        </CharacterListContainer>
+        {loading && <Loading />}
+
+        {!loading && (
+          <CharacterListContainer>
+            {characters?.map((character) => (
+              <CharacterCard
+                key={character.id}
+                name={character.name}
+                image={character.image}
+                status={character.status}
+                origin={character.origin}
+                location={character.location}
+                species={character.species}
+              />
+            ))}
+          </CharacterListContainer>
+        )}
+
+        <PaginationButtonsContainer>
+          <Button
+            onClick={() => setPage(prevPage)}
+            disabled={loading || prevPage === 0}
+          >
+            Previous
+          </Button>
+          <Button
+            onClick={() => setPage(nextPage)}
+            disabled={loading || nextPage === 0}
+          >
+            Next
+          </Button>
+        </PaginationButtonsContainer>
       </Container>
     </>
   );

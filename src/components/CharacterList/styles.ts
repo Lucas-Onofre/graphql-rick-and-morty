@@ -4,7 +4,7 @@ export const Container = styled.main`
   display: flex;
   position: relative;
   flex-direction: column;
-  height: 80vh;
+  min-height: 100%;
   text-align: center;
 
   background-color: #202329;
@@ -30,7 +30,7 @@ export const CharacterListContainer = styled.div`
   margin: 0 auto;
   width: 95%;
 
-  @media (max-width: 720px) {
+  @media (max-width: 960px) {
     grid-template-columns: 1fr;
   }
 `;
@@ -68,19 +68,20 @@ export const CharImage = styled.img`
     width: 100%;
     height: 30%;
 
-    border-radius: 1rem;
+    border-top-right-radius: 1rem;
+    border-bottom-left-radius: 0;
   }
 `;
 
 export const CharPrincipalInfos = styled.div`
   h2 {
     font-weight: 800;
-    font-size: 2rem;
+    font-size: 1.8rem;
   }
 
   p {
     font-weight: 500;
-    font-size: 1rem;
+    font-size: 0.9rem;
   }
 `;
 
@@ -88,13 +89,13 @@ export const CharOtherInfos = styled.div`
   gap: 2rem;
 
   span {
-    font-size: 1.4rem;
+    font-size: 1.2rem;
     font-weight: 600;
     color: #a8a8b3;
   }
 
   p {
-    font-size: 1.6rem;
+    font-size: 1.4rem;
     font-weight: 200;
   }
 `;
@@ -116,5 +117,36 @@ export const CharInfoContainer = styled.div`
   @media (max-width: 720px) {
     width: 100%;
     height: 70%;
+  }
+`;
+
+export const PaginationButtonsContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  gap: 70vw;
+
+  margin: 2rem auto;
+
+  button {
+    border: none;
+    background-color: #3c3e44;
+    color: white;
+    width: 5rem;
+
+    :disabled {
+      color: white;
+      background-color: #3c3e44;
+      opacity: 0.5;
+    }
+
+    border-radius: 0.5rem;
+
+    transition: transform 0.2s;
+
+    &:hover {
+      transform: scale(1.02);
+    }
   }
 `;

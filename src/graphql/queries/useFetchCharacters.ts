@@ -35,10 +35,6 @@ export const GET_CHARACTERS = gql`
         origin {
           name
         }
-        episode {
-          name
-          air_date
-        }
       }
     }
   }
@@ -49,7 +45,8 @@ interface IQuery {
   characters: ICharacter[] | undefined;
   count: number;
   currentPage: number;
-  nextPage: number | null;
+  prevPage: number;
+  nextPage: number;
   getCharacters: (payload: {
     variables: {
       page: number;
@@ -64,16 +61,17 @@ export const useFetchCharacters = (): IQuery => {
     useLazyQuery<CharactersResponse>(GET_CHARACTERS);
 
   const characters = data?.characters.results;
-  const prevPage = data?.characters.info.prev;
-  const currentPage = prevPage ? prevPage + 1 : 1;
-  const nextPage = data?.characters.info.next || null;
+  const prevPage = data?.characters.info.prev || 0;
+  const currentPage = prevPage && prevPage !== null ? prevPage + 1 : 1;
+  const nextPage = data?.characters.info.next || 0;
 
   return {
     loading,
     characters,
     count: data?.characters.info.count || 0,
+    prevPage,
     currentPage,
-    nextPage: nextPage,
+    nextPage,
     getCharacters,
   };
 };

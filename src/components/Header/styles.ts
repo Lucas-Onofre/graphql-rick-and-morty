@@ -6,6 +6,8 @@ export const Container = styled.header`
   flex-direction: column;
   height: calc(40vh - 5rem);
   text-align: center;
+
+  background-color: white;
 `;
 
 export const Title = styled.h1`

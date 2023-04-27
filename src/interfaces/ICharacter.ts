@@ -12,4 +12,8 @@ export interface ICharacter {
     name: string;
     url: string;
   };
+  episode: Array<{
+    id: string;
+    name: string;
+  }>;
 }

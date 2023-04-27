@@ -14,6 +14,7 @@ export interface CharactersResponse {
   };
 }
 
+//i just want the first item of the episode array
 export const GET_CHARACTERS = gql`
   query GetCharacters($page: Int!, $name: String, $status: String) {
     characters(page: $page, filter: { name: $name, status: $status }) {
@@ -33,6 +34,10 @@ export const GET_CHARACTERS = gql`
           name
         }
         origin {
+          name
+        }
+        episode {
+          id
           name
         }
       }

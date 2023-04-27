@@ -112,6 +112,7 @@ export const CharacterList = () => {
                 status={character.status}
                 origin={character.origin}
                 location={character.location}
+                episode={character.episode[0]}
                 species={character.species}
               />
             ))}
@@ -150,6 +151,10 @@ type CharacterCardProps = {
     name: string;
     url: string;
   };
+  episode: {
+    id: string;
+    name: string;
+  };
 };
 
 const CharacterCard = ({
@@ -159,7 +164,9 @@ const CharacterCard = ({
   species,
   location,
   origin,
+  episode,
 }: CharacterCardProps) => {
+  console.log(episode);
   return (
     <CardContainer>
       <CharImage src={image} alt={name} />
@@ -179,7 +186,8 @@ const CharacterCard = ({
 
         <CharOtherInfos>
           <span>First seen in:</span>
-          <p>{origin.name}</p>
+
+          <p>{episode.name}</p>
         </CharOtherInfos>
       </CharInfoContainer>
     </CardContainer>

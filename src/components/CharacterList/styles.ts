@@ -67,6 +67,35 @@ export const CharImage = styled.img`
   @media (max-width: 720px) {
     width: 100%;
     height: 30%;
+
+    border-radius: 1rem;
+  }
+`;
+
+export const CharPrincipalInfos = styled.div`
+  h2 {
+    font-weight: 800;
+    font-size: 2rem;
+  }
+
+  p {
+    font-weight: 500;
+    font-size: 1rem;
+  }
+`;
+
+export const CharOtherInfos = styled.div`
+  gap: 2rem;
+
+  span {
+    font-size: 1.4rem;
+    font-weight: 600;
+    color: #a8a8b3;
+  }
+
+  p {
+    font-size: 1.6rem;
+    font-weight: 200;
   }
 `;
 
@@ -83,16 +112,6 @@ export const CharInfoContainer = styled.div`
   width: 60%;
   height: 100%;
   padding: 1rem;
-
-  h2 {
-    font-weight: 800;
-    font-size: 2rem;
-  }
-
-  p {
-    font-weight: 500;
-    font-size: 1rem;
-  }
 
   @media (max-width: 720px) {
     width: 100%;

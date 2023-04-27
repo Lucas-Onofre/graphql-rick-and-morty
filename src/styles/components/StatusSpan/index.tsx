@@ -1,12 +1,14 @@
 type StatusSpanProps = {
-  alive: boolean;
+  status: string;
 };
 
-export const StatusSpan = ({ alive }: StatusSpanProps) => {
+export const StatusSpan = ({ status }: StatusSpanProps) => {
   const getColor = () => {
-    if (alive) return "#00ff00";
+    if (status === "Alive") return "#00ff00";
 
-    return "#ff0000";
+    if (status === "Dead") return "#ff0000";
+
+    if (status === "unknown") return "#a8a8b3";
   };
 
   return (

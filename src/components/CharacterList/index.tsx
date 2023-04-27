@@ -1,3 +1,5 @@
+import React, { useEffect } from "react";
+
 import { Input, Select } from "antd";
 
 import {
@@ -7,11 +9,27 @@ import {
   CharacterListContainer,
   Container,
   FilterContainer,
+  CharPrincipalInfos,
+  CharOtherInfos,
 } from "./styles";
 
 import { StatusSpan } from "../../styles/components/StatusSpan";
+import { useFetchCharacters } from "../../graphql/queries/useFetchCharacters";
 
 export const CharacterList = () => {
+  const { loading, characters, currentPage, nextPage, getCharacters } =
+    useFetchCharacters();
+
+  useEffect(() => {
+    getCharacters({
+      variables: {
+        page: 1,
+        name: "",
+        status: "",
+      },
+    });
+  }, [getCharacters]);
+
   return (
     <>
       <Container>
@@ -53,29 +71,67 @@ export const CharacterList = () => {
         </FilterContainer>
 
         <CharacterListContainer>
-          <CharacterCard />
-          <CharacterCard />
+          {characters?.map((character) => (
+            <CharacterCard
+              key={character.id}
+              name={character.name}
+              image={character.image}
+              status={character.status}
+              origin={character.origin}
+              location={character.location}
+              species={character.species}
+            />
+          ))}
         </CharacterListContainer>
       </Container>
     </>
   );
 };
 
-const CharacterCard = () => {
+type CharacterCardProps = {
+  name: string;
+  image: string;
+  status: string;
+  species: string;
+  location: {
+    name: string;
+    url: string;
+  };
+  origin: {
+    name: string;
+    url: string;
+  };
+};
+
+const CharacterCard = ({
+  name,
+  image,
+  status,
+  species,
+  location,
+  origin,
+}: CharacterCardProps) => {
   return (
     <CardContainer>
-      <CharImage
-        src="https://rickandmortyapi.com/api/character/avatar/1.jpeg"
-        alt="Rick Sanchez"
-      />
+      <CharImage src={image} alt={name} />
       <CharInfoContainer>
-        <div>
-          <h2>Rick Sanchez</h2>
+        <CharPrincipalInfos>
+          <h2>{name}</h2>
           <p>
-            <StatusSpan alive={true} />
-            Human - Alive
+            <StatusSpan status={status} />
+            {species} - {status}
           </p>
-        </div>
+        </CharPrincipalInfos>
+
+        <CharOtherInfos>
+          <span>Last known location:</span>
+          <p>{location.name}</p>
+        </CharOtherInfos>
+
+        <CharOtherInfos>
+          <span>First seen in:</span>
+          <p>{origin.name}</p>
+        </CharOtherInfos>
       </CharInfoContainer>
     </CardContainer>
   );
